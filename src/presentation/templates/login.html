@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión — RedCode Academy{% endblock %}
+{% block meta_description %}Inicia sesión en RedCode Academy para acceder a convocatorias y desafíos de programación.{% endblock %}
+
+{% block body_class %}bg-[#F8F9FA] text-black{% endblock %}
+
+{% block navbar %}
+    <!-- Encabezado -->
+    <header class="px-8 py-4 flex items-center justify-between shadow-sm bg-white">
+        <div class="text-2xl font-bold text-black">
+            <a href="{{ url_for('main.index') }}">RedCode <b style="color: #FFD600;">Academy</b></a>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <!-- Contenido Principal -->
+    <div class="flex-grow flex items-center justify-center p-6">
+        <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+            <!-- Bloque de Información -->
+            <div class="space-y-6 hidden md:block">
+                <h1 class="text-5xl font-bold text-black">RedCode Academy</h1>
+                <h2 class="text-2xl font-semibold"><b style="color: #FF9700;">¡Es hora de Aprender!</b></h2>
+                <p class="text-lg text-gray-600">
+                    Únete a nuestra plataforma educativa y participa en convocatorias que sirven como entrenamientos
+                    para mejorar tus habilidades de desarrollo.
+                </p>
+                <img src="{{ url_for('static', filename='assets/Folder.svg') }}"
+                    alt="Ilustración Folder - RedCode Academy"
+                    class="w-full max-w-md h-auto drop-shadow-md transition-transform duration-500 hover:scale-105">
+            </div>
+
+            <!-- Right Login Form -->
+            <div class="bg-[#D0FEFF] rounded-2xl shadow-lg p-8 max-w-md w-full mx-auto md:ml-auto md:mr-0">
+                <h3 class="text-3xl font-bold text-center mb-8 text-black">Iniciar sesión</h3>
+                <form action="{{ url_for('auth.login') }}" method="POST" class="space-y-6">
+                    <div>
+                        <label for="email" class="text-sm font-semibold text-gray-600 ml-4 mb-1 block">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" placeholder="Correo Electrónico" required
+                            class="w-full bg-white rounded-full px-6 py-4 outline-none focus:ring-2 focus:ring-[#FFD600] text-black placeholder-gray-500">
+                    </div>
+                    <div>
+                        <label for="password" class="text-sm font-semibold text-gray-600 ml-4 mb-1 block">Contraseña</label>
+                        <input type="password" id="password" name="password" placeholder="********" required
+                            class="w-full bg-white rounded-full px-6 py-4 outline-none focus:ring-2 focus:ring-[#FFD600] text-black placeholder-gray-500">
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-[#FFD600] hover:bg-yellow-400 text-black font-bold rounded-full px-6 py-4 shadow-md transition transform hover:-translate-y-0.5">
+                        Ingresar
+                    </button>
+                    <p class="text-center text-sm text-gray-600 mt-4">
+                        ¿No tienes cuenta?
+                        <a href="{{ url_for('auth.register') }}" class="font-bold text-black hover:underline">Regístrate aquí</a>
+                    </p>
+                </form>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

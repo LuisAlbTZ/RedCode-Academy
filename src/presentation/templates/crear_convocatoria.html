@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Crear Convocatoria — RedCode Academy{% endblock %}
+
+{% block body_class %}bg-[#EEFFFF] text-[#212121]{% endblock %}
+
+{% block navbar %}
+<header class="sticky top-0 z-50 flex items-center justify-between p-4 bg-white shadow-sm">
+    <a href="{{ url_for('main.dashboard') }}" class="text-2xl font-bold text-[#212121]">
+        RedCode <b style="color: #FFD600;">Academy</b>
+    </a>
+    <div
+        class="w-10 h-10 bg-secondary text-white rounded-full inline-flex justify-center items-center text-sm font-bold border-4 border-white shadow-md uppercase mr-auto">
+        {{ current_user.nombre[0] if current_user.nombre else '' }}{{ current_user.apellido[0] if current_user.apellido
+        else '' }} </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-extrabold mb-2">Crear Convocatoria</h1>
+    <p class="text-gray-600 mb-8">Define los parámetros del reto de programación que vas a organizar.</p>
+
+    <form action="{{ url_for('convocatoria.crear') }}" method="POST" class="space-y-6">
+
+        <!-- Info Básica -->
+        <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+            <h2 class="font-bold text-lg border-b pb-2">Información Básica</h2>
+            <div>
+                <label for="titulo" class="text-sm font-semibold text-gray-600 mb-1 block">Título *</label>
+                <input type="text" id="titulo" name="titulo" required placeholder="Ej: Hackathon de UI/UX"
+                    class="w-full bg-[#F8F9FA] rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm">
+            </div>
+            <div>
+                <label for="descripcion" class="text-sm font-semibold text-gray-600 mb-1 block">Descripción *</label>
+                <textarea id="descripcion" name="descripcion" required rows="4"
+                    placeholder="Descripción completa del reto..."
+                    class="w-full bg-[#F8F9FA] rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm resize-none"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="visibilidad" class="text-sm font-semibold text-gray-600 mb-1 block">Visibilidad
+                        *</label>
+                    <select id="visibilidad" name="visibilidad"
+                        class="w-full bg-[#F8F9FA] rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm">
+                        <option value="Pública">Pública</option>
+                        <option value="Privada">Privada</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="modalidad" class="text-sm font-semibold text-gray-600 mb-1 block">Modalidad *</label>
+                    <select id="modalidad" name="modalidad"
+                        class="w-full bg-[#F8F9FA] rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm">
+                        <option value="Individual">Individual</option>
+                        <option value="Equipo">Equipo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+                <div>
+                    <label for="costo" class="text-sm font-semibold text-gray-600 mb-1 block">Costo ($)</label>
+                    <input type="number" id="costo" name="costo" value="0" min="0" step="0.01"
+                        class="w-full bg-[#F8F9FA] rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm">
+                </div>
+                <div>
+                    <label for="min_participantes" class="text-sm font-semibold text-gray-600 mb-1 block">Mín.
+                        Participantes</label>
+                    <input type="number" id="min_participantes" name="min_participantes" value="1" min="1"
+                        class="w-full bg-[#F8F9FA] rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm">
+                </div>
+                <div>
+                    <label for="max_participantes" class="text-sm font-semibold text-gray-600 mb-1 block">Máx.
+                        Participantes</label>
+                    <input type="number" id="max_participantes" name="max_participantes" value="6" min="1"
+                        class="w-full bg-[#F8F9FA] rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm">
+                </div>
+            </div>
+        </div>
+
+        <!-- Fechas -->
+        <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+            <h2 class="font-bold text-lg border-b pb-2">Fechas</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="fecha_inicio" class="text-sm font-semibold text-gray-600 mb-1 block">Fecha de Inicio
+                        *</label>
+                    <input type="datetime-local" id="fecha_inicio" name="fecha_inicio" required
+                        class="w-full bg-[#F8F9FA] rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm">
+                </div>
+                <div>
+                    <label for="fecha_fin" class="text-sm font-semibold text-gray-600 mb-1 block">Fecha de Fin *</label>
+                    <input type="datetime-local" id="fecha_fin" name="fecha_fin" required
+                        class="w-full bg-[#F8F9FA] rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm">
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido del Reto -->
+        <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+            <h2 class="font-bold text-lg border-b pb-2">Contenido del Reto</h2>
+            <div>
+                <label for="reglas" class="text-sm font-semibold text-gray-600 mb-1 block">Reglas *</label>
+                <textarea id="reglas" name="reglas" required rows="3"
+                    placeholder="Define las reglas de la convocatoria..."
+                    class="w-full bg-[#F8F9FA] rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm resize-none"></textarea>
+            </div>
+            <div>
+                <label for="especificaciones" class="text-sm font-semibold text-gray-600 mb-1 block">Especificaciones
+                    *</label>
+                <textarea id="especificaciones" name="especificaciones" required rows="3"
+                    placeholder="Especificaciones técnicas..."
+                    class="w-full bg-[#F8F9FA] rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm resize-none"></textarea>
+            </div>
+            <div>
+                <label for="indicaciones" class="text-sm font-semibold text-gray-600 mb-1 block">Indicaciones *</label>
+                <textarea id="indicaciones" name="indicaciones" required rows="3"
+                    placeholder="Indicaciones para los participantes..."
+                    class="w-full bg-[#F8F9FA] rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm resize-none"></textarea>
+            </div>
+            <div>
+                <label for="metricas_evaluacion" class="text-sm font-semibold text-gray-600 mb-1 block">Métricas de
+                    Evaluación *</label>
+                <textarea id="metricas_evaluacion" name="metricas_evaluacion" required rows="3"
+                    placeholder="¿Cómo se evaluarán las entregas?"
+                    class="w-full bg-[#F8F9FA] rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm resize-none"></textarea>
+            </div>
+            <div>
+                <label for="tecnologias_sugeridas" class="text-sm font-semibold text-gray-600 mb-1 block">Tecnologías
+                    Sugeridas</label>
+                <input type="text" id="tecnologias_sugeridas" name="tecnologias_sugeridas"
+                    placeholder="Ej: React, Python, PostgreSQL"
+                    class="w-full bg-[#F8F9FA] rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm">
+            </div>
+            <div>
+                <label for="patrocinadores"
+                    class="text-sm font-semibold text-gray-600 mb-1 block">Patrocinadores</label>
+                <input type="text" id="patrocinadores" name="patrocinadores" placeholder="Ej: Empresa X, Startup Y"
+                    class="w-full bg-[#F8F9FA] rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-sm">
+            </div>
+        </div>
+
+        <button type="submit"
+            class="w-full bg-[#FFD600] hover:bg-yellow-400 text-black font-bold rounded-full py-4 shadow-md transition transform hover:-translate-y-0.5 text-lg">
+            Publicar Convocatoria
+        </button>
+    </form>
+</div>
+{% endblock %}

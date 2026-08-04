@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+{% block title %}{{ conv.titulo }} — RedCode Academy{% endblock %}
+
+{% block body_class %}bg-[#EEFFFF] text-[#212121]{% endblock %}
+
+{% block navbar %}
+<header class="sticky top-0 z-50 flex items-center justify-between p-4 bg-white shadow-sm">
+    <a href="{{ url_for('main.dashboard') }}" class="text-2xl font-bold text-[#212121]">
+        RedCode <b style="color: #FFD600;">Academy</b>
+    </a>
+    <nav class="flex items-center gap-4 font-semibold">
+        {% if current_user.es_admin %}
+        <a href="{{ url_for('admin.panel') }}" class="text-sm text-blue-600 hover:underline">Panel Admin</a>
+        {% endif %}
+        <div
+            class="w-10 h-10 bg-secondary text-white rounded-full inline-flex justify-center items-center text-sm font-bold border-4 border-white shadow-md uppercase">
+            {{ current_user.nombre[0] if current_user.nombre else '' }}{{ current_user.apellido[0] if
+            current_user.apellido else ''
+            }}
+        </div>
+
+    </nav>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-8">
+
+    <!-- Header Convocatoria -->
+    <div class="bg-white rounded-2xl shadow-sm p-8 mb-6">
+        <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold
+                        {% if conv.estado == 'Activa' %}bg-green-100 text-green-700
+                        {% elif conv.estado == 'Finalizada' %}bg-gray-100 text-gray-600
+                        {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                        {{ conv.estado }}
+                    </span>
+                    <span class="px-3 py-1 rounded-full text-xs font-bold
+                        {% if conv.visibilidad == 'Pública' %}bg-blue-100 text-blue-700
+                        {% else %}bg-orange-100 text-orange-700{% endif %}">
+                        {{ conv.visibilidad }}
+                    </span>
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-[#FFF6C8] text-yellow-800">
+                        {{ conv.modalidad }}
+                    </span>
+                </div>
+                <h1 class="text-3xl font-extrabold text-[#212121] mb-3">{{ conv.titulo }}</h1>
+                <p class="text-gray-600 text-base leading-relaxed">{{ conv.descripcion }}</p>
+            </div>
+        </div>
+
+        <!-- Fechas -->
+        <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div class="bg-[#EEFFFF] rounded-xl p-3">
+                <p class="text-xs text-gray-500 font-semibold">Inicio</p>
+                <p class="font-bold text-sm">{{ conv.fecha_inicio.strftime('%d/%m/%Y') }}</p>
+            </div>
+            <div class="bg-[#EEFFFF] rounded-xl p-3">
+                <p class="text-xs text-gray-500 font-semibold">Fin</p>
+                <p class="font-bold text-sm">{{ conv.fecha_fin.strftime('%d/%m/%Y') }}</p>
+            </div>
+            <div class="bg-[#FFEED5] rounded-xl p-3">
+                <p class="text-xs text-gray-500 font-semibold">Participantes</p>
+                <p class="font-bold text-sm">{{ conv.min_participantes }}–{{ conv.max_participantes }}</p>
+            </div>
+            <div class="bg-[#FFEED5] rounded-xl p-3">
+                <p class="text-xs text-gray-500 font-semibold">Costo</p>
+                <p class="font-bold text-sm">{% if conv.costo == 0 %}Gratis{% else %}${{ conv.costo }}{% endif %}</p>
+            </div>
+        </div>
+
+        <!-- Acción del usuario -->
+        <div class="mt-6 flex gap-3 flex-wrap">
+            {% if mi_relacion %}
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm
+                    {% if mi_relacion.rol_en_convocatoria == 'Mentor' %}bg-purple-100 text-purple-700
+                    {% elif mi_relacion.rol_en_convocatoria == 'Jurado' %}bg-blue-100 text-blue-700
+                    {% else %}bg-green-100 text-green-700{% endif %}">
+                Tu rol: {{ mi_relacion.rol_en_convocatoria }}
+                {% if mi_relacion.estado_validacion != 'Aprobado' %}
+                <span class="text-orange-500">({{ mi_relacion.estado_validacion }})</span>
+                {% endif %}
+            </span>
+            {% if mi_relacion.rol_en_convocatoria == 'Aprendiz' and mi_relacion.estado_validacion == 'Aprobado' %}
+            <a href="{{ url_for('work_group.crear', convocatoria_id=conv.id) }}"
+                class="bg-[#FFD600] hover:bg-yellow-400 text-black font-bold rounded-full px-5 py-2 text-sm shadow-sm transition">
+                📤 Subir Entregable
+            </a>
+            {% endif %}
+            {% elif conv.estado == 'Activa' %}
+            <form action="{{ url_for('convocatoria.participar', convocatoria_id=conv.id) }}" method="POST">
+                <button type="submit"
+                    class="bg-[#FFD600] hover:bg-yellow-400 text-black font-bold rounded-full px-5 py-2 text-sm shadow-sm transition">
+                    🚀 Participar
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Detalles principales -->
+        <div class="md:col-span-2 space-y-4">
+
+            <!-- Reglas -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-lg font-bold mb-3">📋 Reglas</h2>
+                <p class="text-gray-700 text-sm whitespace-pre-line">{{ conv.reglas }}</p>
+            </div>
+
+            <!-- Especificaciones -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-lg font-bold mb-3">⚙️ Especificaciones</h2>
+                <p class="text-gray-700 text-sm whitespace-pre-line">{{ conv.especificaciones }}</p>
+            </div>
+
+            <!-- Indicaciones -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-lg font-bold mb-3">📝 Indicaciones</h2>
+                <p class="text-gray-700 text-sm whitespace-pre-line">{{ conv.indicaciones }}</p>
+            </div>
+
+            <!-- Métricas -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-lg font-bold mb-3">📊 Métricas de Evaluación</h2>
+                <p class="text-gray-700 text-sm whitespace-pre-line">{{ conv.metricas_evaluacion }}</p>
+            </div>
+
+            {% if conv.tecnologias_sugeridas %}
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-lg font-bold mb-3">🛠 Tecnologías Sugeridas</h2>
+                <p class="text-gray-700 text-sm">{{ conv.tecnologias_sugeridas }}</p>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- Sidebar Participantes -->
+        <div class="space-y-4">
+
+            <!-- Ganador -->
+            {% if ganador_result %}
+            <div class="bg-[#FFF6C8] border-2 border-[#FFD600] rounded-xl p-4">
+                <h3 class="font-bold mb-2">🏆 Ganador</h3>
+                <a href="{{ url_for('work_group.detalle', work_group_id=ganador_result[0].id) }}"
+                    class="font-semibold text-[#212121] hover:underline text-sm">
+                    {{ ganador_result[0].titulo }}
+                </a>
+                <p class="text-xs text-gray-500 mt-1">Promedio: {{ '%.1f'|format(ganador_result[1]) }}/10</p>
+            </div>
+            {% endif %}
+
+            <!-- Participantes -->
+            <div class="bg-white rounded-xl shadow-sm p-4">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">
+                    Participantes ({{ participantes|length }})
+                </h3>
+                {% if participantes %}
+                <ul class="space-y-3">
+                    {% for rel in participantes %}
+                    <li class="flex items-center justify-between text-sm">
+                        <span class="font-medium text-[#212121]">{{ rel.usuario.nombre_completo }}</span>
+                        <div class="flex flex-col items-end gap-1">
+                            <span class="text-xs px-2 py-0.5 rounded-full font-bold
+                                        {% if rel.rol_en_convocatoria == 'Mentor' %}bg-purple-100 text-purple-700
+                                        {% elif rel.rol_en_convocatoria == 'Jurado' %}bg-blue-100 text-blue-700
+                                        {% else %}bg-green-100 text-green-700{% endif %}">
+                                {{ rel.rol_en_convocatoria }}
+                            </span>
+                            <!-- Mentor: acciones de validación -->
+                            {% if mi_relacion and mi_relacion.rol_en_convocatoria == 'Mentor' and
+                            rel.rol_en_convocatoria == 'Aprendiz' and rel.estado_validacion == 'Pendiente' %}
+                            <div class="flex gap-1 mt-1">
+                                <form
+                                    action="{{ url_for('convocatoria.validar_participante', convocatoria_id=conv.id, usuario_id=rel.usuario_id) }}"
+                                    method="POST">
+                                    <input type="hidden" name="estado" value="Aprobado">
+                                    <button type="submit"
+                                        class="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full hover:bg-green-600">✓</button>
+                                </form>
+                                <form
+                                    action="{{ url_for('convocatoria.validar_participante', convocatoria_id=conv.id, usuario_id=rel.usuario_id) }}"
+                                    method="POST">
+                                    <input type="hidden" name="estado" value="Rechazado">
+                                    <button type="submit"
+                                        class="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full hover:bg-red-600">✗</button>
+                                </form>
+                            </div>
+                            {% else %}
+                            <span class="text-xs text-gray-400">{{ rel.estado_validacion }}</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-sm text-gray-500">Aún no hay participantes.</p>
+                {% endif %}
+            </div>
+
+            {% if conv.patrocinadores %}
+            <div class="bg-white rounded-xl shadow-sm p-4">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Patrocinadores</h3>
+                <p class="text-sm text-gray-700">{{ conv.patrocinadores }}</p>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

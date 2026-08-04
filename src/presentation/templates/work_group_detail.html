@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}{{ wg.titulo }} — RedCode Academy{% endblock %}
+{% block meta_description %}Detalle del entregable publicado por {{ wg.autor.nombre_completo }}.{% endblock %}
+
+{% block body_class %}bg-[#EEFFFF] text-[#212121]{% endblock %}
+
+{% block navbar %}
+<header class="sticky top-0 z-50 flex items-center justify-between p-4 bg-white shadow-sm">
+    <div class="flex items-center gap-6">
+        <a href="{{ url_for('main.dashboard') }}" class="text-2xl font-bold text-[#212121]">
+            RedCode <b style="color: #FFD600;">Academy</b>
+        </a>
+    </div>
+    <div
+        class="w-10 h-10 bg-secondary text-white rounded-full inline-flex justify-center items-center text-sm font-bold border-4 border-white shadow-md uppercase">
+        {{ current_user.nombre[0] if current_user.nombre else '' }}{{ current_user.apellido[0] if current_user.apellido
+        else ''
+        }}
+    </div>
+
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-6 mt-6 flex gap-6">
+
+    <!-- Sistema de votación lateral -->
+    <aside class="w-16 flex-shrink-0 flex flex-col items-center gap-2 pt-4">
+        <button onclick="votar('{{ wg.id }}', 'up', this)"
+            class="text-gray-400 hover:text-green-500 font-bold text-3xl transition">▲</button>
+        <span id="score-{{ wg.id }}" class="font-bold text-xl">{{ wg.puntuacion }}</span>
+        <button onclick="votar('{{ wg.id }}', 'down', this)"
+            class="text-gray-400 hover:text-red-500 font-bold text-3xl transition">▼</button>
+    </aside>
+
+    <main class="flex-grow space-y-6">
+        <!-- Detalles del Entregable -->
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="mb-4">
+                {% for category, message in messages %}
+                <div
+                    class="p-3 rounded-md text-sm {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <div class="text-sm text-gray-500 mb-2">
+                Publicado por <span class="font-bold text-gray-700">{{ wg.autor.nombre_completo }}</span> el {{
+                wg.fecha_creacion.strftime('%d/%m/%Y') }}
+                · Convocatoria: <a href="{{ url_for('convocatoria.detalle', convocatoria_id=wg.convocatoria_id) }}"
+                    class="hover:underline text-blue-600">{{ wg.convocatoria.titulo }}</a>
+            </div>
+
+            <h1 class="text-3xl font-bold text-[#212121] mb-6">{{ wg.titulo }}</h1>
+
+            {% if wg.descripcion_texto %}
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-2">Descripción</h3>
+                <p class="text-gray-700 whitespace-pre-line">{{ wg.descripcion_texto }}</p>
+            </div>
+            {% endif %}
+
+            {% if wg.contenido_codigo %}
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-2">Código</h3>
+                <pre
+                    class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code>{{ wg.contenido_codigo }}</code></pre>
+            </div>
+            {% endif %}
+
+            {% if wg.enlace_repositorio %}
+            <div class="mb-4">
+                <a href="{{ wg.enlace_repositorio }}" target="_blank" rel="noopener"
+                    class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg transition">
+                    🔗 Ver Repositorio Externo
+                </a>
+            </div>
+            {% endif %}
+
+            <div class="mt-8 pt-6 border-t border-gray-100 flex items-center gap-4">
+                <div class="text-sm font-semibold bg-[#FFF6C8] text-yellow-700 px-3 py-1 rounded">
+                    Calificación Promedio: ⭐ {{ '%.1f'|format(wg.promedio_calificacion) }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Calificación (Solo para Jurado/Mentor) -->
+        {% if mi_relacion and mi_relacion.rol_en_convocatoria in ['Mentor', 'Jurado'] %}
+        <div class="bg-[#FFF6C8] rounded-xl shadow-sm p-6 border border-yellow-200">
+            <h3 class="font-bold text-yellow-800 mb-2">Calificar Entrega (Solo Jurado/Mentor)</h3>
+            <form action="{{ url_for('work_group.calificar', work_group_id=wg.id) }}" method="POST"
+                class="flex gap-4 items-end">
+                <div>
+                    <label for="calificacion" class="block text-sm font-bold text-yellow-900 mb-1">Puntuación
+                        (1-10)</label>
+                    <input type="number" id="calificacion" name="calificacion" min="1" max="100" required
+                        class="w-24 p-2 border border-yellow-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                </div>
+                <button type="submit"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded shadow-sm transition">
+                    Guardar Calificación
+                </button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Sección de Comentarios -->
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <h2 class="text-xl font-bold text-[#212121] mb-6">Comentarios ({{ comentarios|length }})</h2>
+
+            <!-- Formulario Nuevo Comentario -->
+            <form action="{{ url_for('work_group.comentar', work_group_id=wg.id) }}" method="POST" class="mb-8">
+                <textarea name="contenido" rows="3" required
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FFD600] focus:outline-none mb-3"
+                    placeholder="Escribe un comentario..."></textarea>
+                <div class="flex justify-end">
+                    <button type="submit"
+                        class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-6 rounded-lg shadow-sm transition">
+                        Comentar
+                    </button>
+                </div>
+            </form>
+
+            <!-- Lista de Comentarios -->
+            <div class="space-y-6">
+                {% for comentario in comentarios %}
+                <div class="flex gap-4">
+                    <div
+                        class="w-10 h-10 bg-gray-200 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-gray-500">
+                        {{ comentario.autor.nombre[0] }}{{ comentario.autor.apellido[0] }}
+                    </div>
+                    <div>
+                        <div class="text-sm mb-1">
+                            <span class="font-bold text-gray-800">{{ comentario.autor.nombre_completo }}</span>
+                            <span class="text-gray-500 ml-2">{{ comentario.fecha_comentario.strftime('%d/%m/%Y %H:%M')
+                                }}</span>
+                        </div>
+                        <p class="text-gray-700 bg-gray-50 p-3 rounded-lg">{{ comentario.contenido }}</p>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-gray-500 italic text-center py-4">Aún no hay comentarios. ¡Sé el primero en opinar!</p>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    async function votar(workGroupId, direccion, btn) {
+        try {
+            const response = await fetch(`/work-group/${workGroupId}/votar`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ direccion }),
+            });
+            const data = await response.json();
+            if (data.ok) {
+                document.getElementById(`score-${workGroupId}`).textContent = data.puntuacion;
+            } else {
+                alert(data.error || 'Error al votar');
+            }
+        } catch (e) {
+            console.error('Error al votar:', e);
+        }
+    }
+</script>
+{% endblock %}

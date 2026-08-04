@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RedCode Academy{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}RedCode Academy — Plataforma educativa de programación mediante desafíos tipo Hackathon.{% endblock %}">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FFD600',
+                        'primary-light': '#FFF6C8',
+                        secondary: '#FF9700',
+                        'secondary-light': '#FFEED5',
+                        accent: '#D0FEFF',
+                        background: '#FFFFFF',
+                        textDark: '#212121',
+                        input: '#FFFFFF',
+                    },
+                    borderRadius: {
+                        'xl': '12px',
+                        '2xl': '20px',
+                        'pill': '9999px'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .flash-success { background: #d1fae5; border-left: 4px solid #10b981; color: #065f46; }
+        .flash-error   { background: #fee2e2; border-left: 4px solid #ef4444; color: #991b1b; }
+        .flash-info    { background: #dbeafe; border-left: 4px solid #3b82f6; color: #1e40af; }
+        .flash-warning { background: #fef3c7; border-left: 4px solid #f59e0b; color: #92400e; }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}bg-white text-textDark{% endblock %} min-h-screen flex flex-col">
+
+    {% block navbar %}{% endblock %}
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="fixed top-4 right-4 z-50 space-y-2 max-w-sm">
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }} p-4 rounded-xl shadow-lg flex items-start gap-3 text-sm font-medium">
+                        <span class="flex-1">{{ message }}</span>
+                        <button onclick="this.parentElement.remove()" class="text-current opacity-60 hover:opacity-100 font-bold">✕</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Contenido principal -->
+    <main class="flex-grow {% block main_class %}{% endblock %}">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block footer %}{% endblock %}
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

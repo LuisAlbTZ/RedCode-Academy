@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Registrarse — RedCode Academy{% endblock %}
+{% block meta_description %}Crea tu cuenta en RedCode Academy y comienza tu viaje de aprendizaje mediante desafíos de
+programación.{% endblock %}
+
+{% block body_class %}bg-[#F8F9FA] text-black{% endblock %}
+
+{% block navbar %}
+<!-- Header -->
+<header class="px-8 py-4 flex items-center justify-between shadow-sm bg-white">
+    <div class="text-2xl font-bold text-black">
+        <a href="{{ url_for('main.index') }}">RedCode <b style="color: #FFD600;">Academy</b></a>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<div class="flex-grow flex items-center justify-center p-6">
+    <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+        <!-- Bloque de Informacion -->
+        <div class="space-y-6 hidden md:block">
+            <h1 class="text-5xl font-bold text-black">Unete a la Comunidad</h1>
+            <h2 class="text-2xl font-semibold"><b style="color: #FF9700;">¡Comienza tu viaje de aprendizaje hoy!</b>
+            </h2>
+            <p class="text-lg text-gray-600">
+                Crea tu cuenta para acceder a todos los recursos, participar en misiones cooperativos y resolver
+                problemas.
+            </p>
+            <img src="{{ url_for('static', filename='assets/Telescope.svg') }}"
+                alt="Ilustración Telescopio - RedCode Academy"
+                class="w-full max-w-md h-auto drop-shadow-md transition-transform duration-500 hover:scale-105">
+        </div>
+
+        <!-- Formulario de Registro -->
+        <div class="bg-[#D0FEFF] rounded-2xl shadow-lg p-8 max-w-md w-full mx-auto md:ml-auto md:mr-0">
+            <h1 class="text-3xl font-bold text-center mb-2 text-black">Registrate</h1>
+            <p class="text-center mb-6">Ingresa los siguientes datos:</p>
+            <form action="{{ url_for('auth.register') }}" method="POST" class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="nombre" class="text-sm font-semibold text-gray-600 ml-4 mb-1 block">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Nombre" required
+                            class="w-full bg-white rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-black placeholder-gray-500">
+                    </div>
+                    <div>
+                        <label for="apellido"
+                            class="text-sm font-semibold text-gray-600 ml-4 mb-1 block">Apellidos</label>
+                        <input type="text" id="apellido" name="apellido" placeholder="Apellidos" required
+                            class="w-full bg-white rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-black placeholder-gray-500">
+                    </div>
+                </div>
+                <div>
+                    <label for="fecha_nacimiento" class="text-sm font-semibold text-gray-600 ml-4 mb-1 block">Fecha de
+                        Nacimiento</label>
+                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required
+                        class="w-full bg-white rounded-full px-6 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-black text-gray-500">
+                </div>
+                <div>
+                    <label for="email" class="text-sm font-semibold text-gray-600 ml-4 mb-1 block">Correo
+                        Electrónico</label>
+                    <input type="email" id="email" name="email" placeholder="Correo Electrónico" required
+                        class="w-full bg-white rounded-full px-6 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-black placeholder-gray-500">
+                </div>
+                <div>
+                    <label for="password" class="text-sm font-semibold text-gray-600 ml-4 mb-1 block">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Contraseña (mín. 8 caracteres)"
+                        required
+                        class="w-full bg-white rounded-full px-6 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-black placeholder-gray-500">
+                </div>
+                <div>
+                    <label for="confirm_password" class="text-sm font-semibold text-gray-600 ml-4 mb-1 block">Confirmar
+                        Contraseña</label>
+                    <input type="password" id="confirm_password" name="confirm_password"
+                        placeholder="Confirmar Contraseña" required
+                        class="w-full bg-white rounded-full px-6 py-3 outline-none focus:ring-2 focus:ring-[#FFD600] text-black placeholder-gray-500">
+                </div>
+                <button type="submit"
+                    class="w-full bg-[#FFD600] hover:bg-yellow-400 text-black font-bold rounded-full px-6 py-4 shadow-md transition transform hover:-translate-y-0.5 mt-4">
+                    Crear Cuenta
+                </button>
+                <p class="text-center text-sm text-gray-600 mt-4">
+                    ¿Ya tienes cuenta?
+                    <a href="{{ url_for('auth.login') }}" class="font-bold text-black hover:underline">Inicia sesión</a>
+                </p>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

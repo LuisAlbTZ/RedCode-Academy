@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}RedCode Academy — Aprende programando{% endblock %}
+{% block meta_description %}RedCode Academy — Plataforma educativa para aprender programación mediante desafíos tipo
+Hackathon.{% endblock %}
+
+{% block body_class %}bg-white text-textDark{% endblock %}
+
+{% block navbar %}
+<!-- Encabezado -->
+<header class="px-8 py-4 flex items-center justify-between shadow-sm">
+    <div class="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
+        <a href="{{ url_for('main.index') }}">RedCode<b style="color: #FFD600;"> Academy</b></a>
+    </div>
+    <div class="flex items-center gap-4">
+        <a href="{{ url_for('auth.login') }}"
+            class="bg-[#FF9700] text-gray-900 font-bold px-6 py-2 rounded-full hover:bg-yellow-400 transition shadow-sm text-sm md:text-base">
+            Iniciar Sesión
+        </a>
+        <a href="{{ url_for('auth.register') }}"
+            class="bg-[#FF9700] text-gray-900 font-bold px-6 py-2 rounded-full hover:bg-yellow-400 transition shadow-sm text-sm md:text-base">
+            Registrarte
+        </a>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<!-- Contenido Principal -->
+<div class="flex-grow bg-white flex flex-col justify-center items-center px-4 py-12">
+    <div class="max-w-7xl w-full">
+        <!-- Encabezado Central: Título y Subtítulo (centrados) -->
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-3 tracking-tight">
+                Aprendiendo programacion <br> superando los problemas
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-semibold text-gray-800">
+                Bienvenido a RedCode<b style="color: #FFD600;"> Academy</b>
+            </h2>
+        </div>
+
+        <!-- Presentación: Texto Izquierda, Imagen Derecha -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center mb-20">
+            <div class="md:col-span-6 flex flex-col justify-center">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                    ¿Quienes somos?
+                </h3>
+                <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+                    Somos una <b style="color: #FF9700;">plataforma educativa</b> para aprender programación
+                    mediante desafíos de código.
+                    <br><br>
+                    Programar es resolver problemas en ambientes hostiles.
+                    <br><br>
+                    Es traducir lógica a <b style="color: #FFD600;">acciones reales.</b>
+                </p>
+            </div>
+            <div class="md:col-span-6">
+                <img src="{{ url_for('static', filename='assets/Sun.svg') }}" alt="Ilustración Sol - RedCode Academy"
+                    class="w-full max-w-md h-auto drop-shadow-md transition-transform duration-500 hover:scale-105">
+            </div>
+        </div>
+
+        <!-- Filosofía: Imagen Izquierda, Texto Derecha -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center mb-20">
+            <!-- Imagen primero (izquierda) -->
+            <div class="md:col-span-6">
+                <img src="{{ url_for('static', filename='assets/Light.svg') }}"
+                    alt="Ilustración Bombilla - RedCode Academy"
+                    class="w-full max-w-md h-auto drop-shadow-md transition-transform duration-500 hover:scale-105">
+            </div>
+
+            <!-- Texto después (derecha) -->
+            <div class="md:col-span-6 flex flex-col justify-center">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                    Filosofia
+                </h3>
+                <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+                    <b style="color: #FFD600;">Aprende haciendo.</b> <br>
+                    Explora el mapa del código, pero con una misión clara.
+                    <br>
+                    Las misiones de RedCode Academy convocan a futuros profesionales a
+                    enfrentar escenarios reales desde el primer minuto abarcando todo el espectro del desarrollo...
+                    <br><br>
+                    <b style="color: #FF9700;">Fracasar <br>Depurar <br>Iterar <br>¡Y volver a empezar!</b>
+                </p>
+            </div>
+        </div>
+
+        <!-- Comunidad: Texto Centro, Imagen Centro -->
+        <div class="flex flex-col items-center gap-10 py-6">
+            <!-- Texto centrado -->
+            <div class="text-center max-w-4xl">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                    ¡Unete a la comunidad!
+                </h3>
+                <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+                    Deja de mirar. Empieza a programar.
+                    <br><br>
+                    Conéctate con programadores de todo el mundo. Comparte tus proyectos, resuelve dudas y<br>
+                    mejorar con otros.
+                    <br><br>
+                    Encuentra las personas que impulsaran tu carrera.
+                </p>
+            </div>
+            <!-- Imagen centrada -->
+            <div class="relative flex justify-center items-center p-10 w-full max-w-md">
+                <img src="{{ url_for('static', filename='assets/SpeachBubble.svg') }}"
+                    alt="Ilustración Burbuja de Dialogo - RedCode Academy"
+                    class="w-full h-auto drop-shadow-md transition-transform duration-500 hover:scale-90">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<!-- Footer -->
+<footer class="bg-[#D0FEFF] py-6 px-8 text-center text-gray-700 font-medium text-sm">
+    &copy; 2026 RedCode Academy. Todos los derechos reservados.
+</footer>
+{% endblock %}

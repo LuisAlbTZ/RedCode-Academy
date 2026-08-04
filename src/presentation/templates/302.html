@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Redireccionando (302) — RedCode Academy{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] flex items-center justify-center px-4 py-12">
+    <div class="max-w-md w-full text-center">
+        <!-- Ícono de Redirección / Intercambio de ruta -->
+        <div class="mx-auto w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4">
+                </path>
+            </svg>
+        </div>
+
+        <!-- Código de estado y Título -->
+        <h1 class="text-6xl font-extrabold text-textDark mb-2">302</h1>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Redireccionando</h2>
+
+        <!-- Mensaje -->
+        <p class="text-gray-600 mb-8 leading-relaxed">
+            El recurso solicitado ha sido movido temporalmente a otra ubicación. Si no eres redirigido automáticamente en unos segundos, haz clic en el botón a continuación.
+        </p>
+
+        <!-- Botones de Acción -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <!-- Botón Ir al destino (usa la variable redirect_url o por defecto el inicio) -->
+            <a href="{{ redirect_url if redirect_url else url_for('main.index') }}"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary hover:bg-yellow-400 text-textDark font-semibold px-6 py-3 rounded-xl transition duration-200 shadow-md hover:shadow-lg">
+                Continuar
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M14 5l7 7m0 0l-7 7m7-7H3">
+                    </path>
+                </svg>
+            </a>
+
+            <!-- Botón Volver al inicio -->
+            <a href="{{ url_for('main.index') }}"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-xl transition duration-200">
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

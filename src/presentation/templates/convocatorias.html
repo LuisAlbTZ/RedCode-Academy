@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Convocatorias — RedCode Academy{% endblock %}
+
+{% block body_class %}bg-[#EEFFFF] text-[#212121]{% endblock %}
+
+{% block navbar %}
+<header class="sticky top-0 z-50 flex items-center justify-between p-4 bg-white shadow-sm">
+    <a href="{{ url_for('main.dashboard') }}" class="text-2xl font-bold text-[#212121]">
+        RedCode <b style="color: #FFD600;">Academy</b>
+    </a>
+    <nav class="flex items-center gap-4 font-semibold">
+        <a href="{{ url_for('convocatoria.crear') }}"
+            class="bg-[#FFD600] hover:bg-yellow-400 text-black font-bold rounded-full px-4 py-2 text-sm shadow-sm transition">
+            Crear Convocatoria
+        </a>
+        <div
+            class="w-10 h-10 bg-secondary text-white rounded-full inline-flex justify-center items-center text-sm font-bold border-4 border-white shadow-md uppercase">
+            {{ current_user.nombre[0] if current_user.nombre else '' }}{{ current_user.apellido[0] if
+            current_user.apellido else ''
+            }}
+        </div>
+    </nav>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-extrabold mb-8">🏆 Convocatorias</h1>
+
+    {% if convocatorias %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for conv in convocatorias %}
+        <article
+            class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition border border-transparent hover:border-gray-200">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="px-2 py-0.5 rounded-full text-xs font-bold
+                            {% if conv.estado == 'Activa' %}bg-green-100 text-green-700
+                            {% elif conv.estado == 'Finalizada' %}bg-gray-100 text-gray-600
+                            {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                    {{ conv.estado }}
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-bold
+                            {% if conv.visibilidad == 'Pública' %}bg-blue-100 text-blue-700
+                            {% else %}bg-orange-100 text-orange-700{% endif %}">
+                    {{ conv.visibilidad }}
+                </span>
+                <span class="text-xs text-gray-400">{{ conv.modalidad }}</span>
+            </div>
+            <h2 class="text-xl font-bold text-[#212121] mb-2">{{ conv.titulo }}</h2>
+            <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ conv.descripcion }}</p>
+            <div class="flex items-center justify-between">
+                <div class="text-xs text-gray-400">
+                    📅 Hasta {{ conv.fecha_fin.strftime('%d/%m/%Y') }}
+                </div>
+                <a href="{{ url_for('convocatoria.detalle', convocatoria_id=conv.id) }}"
+                    class="bg-[#FFD600] hover:bg-yellow-400 text-black font-bold rounded-full px-4 py-2 text-xs shadow-sm transition">
+                    Ver Detalle →
+                </a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-sm p-12 text-center">
+        <p class="text-5xl mb-4">📭</p>
+        <h2 class="text-xl font-bold mb-2">No hay convocatorias activas</h2>
+        <p class="text-gray-500 mb-6">¡Sé el primero en crear una!</p>
+        <a href="{{ url_for('convocatoria.crear') }}"
+            class="bg-[#FFD600] hover:bg-yellow-400 text-black font-bold rounded-full px-6 py-3 shadow-md transition">
+            Crear Convocatoria
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Autenticación Requerida — RedCode Academy{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] flex items-center justify-center px-4 py-12">
+    <div class="max-w-md w-full text-center">
+        <!-- Ícono de Llave / Autenticación -->
+        <div class="mx-auto w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 0121 9z">
+                </path>
+            </svg>
+        </div>
+
+        <!-- Código de error y Título -->
+        <h1 class="text-6xl font-extrabold text-textDark mb-2">401</h1>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Autenticación requerida</h2>
+
+        <!-- Mensaje -->
+        <p class="text-gray-600 mb-8 leading-relaxed">
+            Debes iniciar sesión para acceder a este recurso o sección. Por favor, ingresa con tu cuenta o regístrate
+            para continuar.
+        </p>
+
+        <!-- Botones de Acción -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <!-- Botón Iniciar Sesión con color primario (#FFD600) -->
+            <a href="{{ url_for('auth.login') }}"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary hover:bg-yellow-400 text-textDark font-semibold px-6 py-3 rounded-xl transition duration-200 shadow-md hover:shadow-lg">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
+                    </path>
+                </svg>
+                Iniciar sesión
+            </a>
+
+            <!-- Botón Volver al inicio -->
+            <a href="{{ url_for('main.index') }}"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-xl transition duration-200">
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
