@@ -18,21 +18,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-
-# ==============================================================================
-# Configuración y Fixtures
-# ==============================================================================
-
-BASE_URL = "http://localhost:5000"
-
+# Cambiar de localhost al nombre del servicio definido en Docker
+BASE_URL = "http://app:5000" 
 
 @pytest.fixture(scope="module")
 def driver():
     """
-    Inicializa y cierra el navegador Chrome en modo headless para las pruebas.
-    Se usa scope='module' para reutilizar la misma instancia del navegador
-    en todas las pruebas de este módulo (más rápido).
+    Inicializa la conexión remota hacia el contenedor de Selenium.
     """
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -41,8 +33,12 @@ def driver():
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920,1080")
 
-    browser = webdriver.Chrome(options=chrome_options)
-    browser.implicitly_wait(5)  # Espera implícita de 5 segundos
+    # Modificado para usar Remote WebDriver apuntando al servicio 'selenium'
+    browser = webdriver.Remote(
+        command_executor='http://selenium:4444/wd/hub',
+        options=chrome_options
+    )
+    browser.implicitly_wait(5)  
 
     yield browser
 
