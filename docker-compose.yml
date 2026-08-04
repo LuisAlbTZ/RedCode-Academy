@@ -42,18 +42,6 @@ services:
       - .:/app
     restart: unless-stopped
 
-  # Nuevo servicio para proveer el navegador Chrome de forma aislada
-  selenium:
-    image: selenium/standalone-chrome:latest
-    container_name: redcode_selenium
-    ports:
-      - "4444:4444"
-      - "7900:7900" # Opcional: Puerto VNC (http://localhost:7900) para ver las pruebas en vivo
-    networks:
-      - redcode_network
-    restart: unless-stopped
-    shm_size: 2g # Previene bloqueos por falta de memoria compartida en Chrome
-
 volumes:
   postgres_data:
 
