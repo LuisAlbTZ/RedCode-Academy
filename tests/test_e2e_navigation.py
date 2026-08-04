@@ -21,30 +21,6 @@ from selenium.webdriver.support import expected_conditions as EC
 # Cambiar de localhost al nombre del servicio definido en Docker
 BASE_URL = "http://app:5000" 
 
-@pytest.fixture(scope="module")
-def driver():
-    """
-    Inicializa la conexión remota hacia el contenedor de Selenium.
-    """
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--window-size=1920,1080")
-
-    # Modificado para usar Remote WebDriver apuntando al servicio 'selenium'
-    browser = webdriver.Remote(
-        command_executor='http://selenium:4444/wd/hub',
-        options=chrome_options
-    )
-    browser.implicitly_wait(5)  
-
-    yield browser
-
-    browser.quit()
-
-
 # ==============================================================================
 # Pruebas de Páginas Públicas — Carga y Contenido
 # ==============================================================================
