@@ -1,5 +1,5 @@
 """
-Data Transfer Objects para la entidad Usuario.
+Entidad Usuario.
 """
 from dataclasses import dataclass
 from datetime import date

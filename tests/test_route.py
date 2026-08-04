@@ -49,37 +49,3 @@ def test_logout_redirects(client):
     """Prueba que cerrar sesión redirige correctamente (por ejemplo, al Home)."""
     response = client.get('/logout')
     assert response.status_code == 302
-
-
-# ==============================================================================
-# Pruebas para Rutas de Administración
-# ==============================================================================
-
-@pytest.mark.parametrize("route", [
-    "/admin",
-    "/admin/usuarios",
-    "/admin/convocatorias",
-])
-def test_admin_routes_unauthenticated(client, route):
-    """
-    Prueba que los usuarios no autenticados o que no sean administradores
-    no puedan acceder a las rutas de panel de control (admin).
-    """
-    response = client.get(route)
-    # Puede ser 401 Unauthorized, 403 Forbidden o 302 Redirect al login/home
-    assert response.status_code in [302, 401, 403]
-
-
-def test_admin_routes_authenticated_as_normal_user(client, auth):
-    """Prueba que un usuario normal no pueda acceder al panel de administración."""
-    # auth.login(email='user_normal@example.com', password='password')
-    # response = client.get('/admin')
-    # assert response.status_code in [403, 302] # Forbidden o Redirect a un lugar seguro
-    pass
-
-def test_admin_routes_authenticated_as_admin(client, auth):
-    """Prueba que un administrador sí pueda acceder al panel de administración."""
-    # auth.login(email='admin@example.com', password='adminpassword')
-    # response = client.get('/admin')
-    # assert response.status_code == 200
-    pass

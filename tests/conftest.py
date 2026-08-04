@@ -1,3 +1,5 @@
+import os
+import sys
 import pytest
 from src import create_app
 from config import Config
@@ -6,7 +8,7 @@ class TestConfig(Config):
     """Configuración específica para el entorno de pruebas."""
     TESTING = True
     # Usar base de datos en memoria para pruebas rápidas e independientes
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:postgres@db:5432/redcode_academy'
     # Desactivar protección CSRF en testing para facilitar las peticiones POST
     WTF_CSRF_ENABLED = False
     SECRET_KEY = 'test-secret-key'

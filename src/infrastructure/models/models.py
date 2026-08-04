@@ -1,7 +1,6 @@
 from datetime import datetime
 from src.infrastructure.database.connection import db
 
-
 # ==============================================================================
 # MODELO PRINCIPAL DE USUARIO
 # ==============================================================================
@@ -147,7 +146,7 @@ class Convocatoria(db.Model):
 # ==============================================================================
 class WorkGroup(db.Model):
     '''
-    Modelo que actúa como una publicación tipo Reddit y un repositorio estilo GitHub.
+    Modelo que actúa como una publicación tipo.
     Permite a los usuarios subir texto, código, imágenes y recibir comentarios/clasificaciones.
     '''
     __tablename__ = 'work_group'
