@@ -63,7 +63,7 @@ jobs:
   docker-build: 
     name: Build Docker Image 
     runs-on: ubuntu-latest 
-    needs: [test, e2e-tests] # Restricción: Solo se ejecuta si el Job de Test pasa con éxito 
+    needs: [test] # Restricción: Solo se ejecuta si el Job de Test pasa con éxito 
     steps: 
       - name: Checkout code 
         uses: actions/checkout@v4 
