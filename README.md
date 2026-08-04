@@ -23,9 +23,10 @@ Interdependiente: Componentes coordinados que trabajan de forma conjunta y acopl
 Despliegue Único: Proceso de publicación simplificado al desplegar la aplicación como una sola unidad.
 
 Capturas de pantalla del anterior codigo:
-<img width="1701" height="849" alt="image" src="https://github.com/user-attachments/assets/64c305d0-5895-45ad-873b-f49ae7715567" />
 
-<img width="1691" height="588" alt="image" src="https://github.com/user-attachments/assets/21894ffa-92b0-42bd-ad79-922ccc01ef3e" />
+![Todo App](https://github.com/asthasharma98/Flask-Todo-App/blob/master/readme_images/todo.PNG)
+
+![Todo App](https://github.com/asthasharma98/Flask-Todo-App/blob/master/readme_images/todo_update.PNG) 
 
 Descripción general del proyecto:
 Ingeniería Reversa y Refactorización
