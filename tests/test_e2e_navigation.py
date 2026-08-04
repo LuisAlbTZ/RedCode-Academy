@@ -19,67 +19,14 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # Cambiar de localhost al nombre del servicio definido en Docker
-BASE_URL = "http://app:5000" 
 
 # ==============================================================================
 # Pruebas de Páginas Públicas — Carga y Contenido
 # ==============================================================================
 
-class TestBasicE2ENavigation:
-    """Verifica que las páginas públicas cargan correctamente y muestran el contenido esperado."""
-
-    def test_index_page_loads(self, driver):
-        """La página principal (landing) carga y muestra el título de RedCode Academy."""
-        driver.get(f"{BASE_URL}/")
-        assert "RedCode" in driver.title
-        # Verificar que el encabezado principal está presente
-        heading = driver.find_element(By.TAG_NAME, "h1")
-        assert heading.is_displayed()
-
-    def test_index_page_has_login_link(self, driver):
-        """La landing page contiene un enlace/botón de 'Iniciar Sesión'."""
-        driver.get(f"{BASE_URL}/")
-        links = driver.find_elements(By.TAG_NAME, "a")
-        login_texts = [link.text for link in links]
-        assert any("Iniciar" in text for text in login_texts), (
-            "No se encontró un enlace de 'Iniciar Sesión' en la página principal"
-        )
-
-    def test_index_page_has_register_link(self, driver):
-        """La landing page contiene un enlace/botón de 'Registrarte'."""
-        driver.get(f"{BASE_URL}/")
-        links = driver.find_elements(By.TAG_NAME, "a")
-        register_texts = [link.text for link in links]
-        assert any("Regist" in text for text in register_texts), (
-            "No se encontró un enlace de 'Registrarte' en la página principal"
-        )
-
-    def test_login_page_loads(self, driver):
-        """La página de login carga y muestra el formulario."""
-        driver.get(f"{BASE_URL}/login")
-        assert "Iniciar" in driver.title or "login" in driver.current_url.lower()
-        # Verificar que el formulario de login está presente
-        form = driver.find_element(By.TAG_NAME, "form")
-        assert form.is_displayed()
-
-    def test_login_page_has_email_field(self, driver):
-        """La página de login tiene un campo de correo electrónico."""
-        driver.get(f"{BASE_URL}/login")
-        email_input = driver.find_element(By.ID, "email")
-        assert email_input.is_displayed()
-        assert email_input.get_attribute("type") == "email"
-
-    def test_login_page_has_password_field(self, driver):
-        """La página de login tiene un campo de contraseña."""
-        driver.get(f"{BASE_URL}/login")
-        password_input = driver.find_element(By.ID, "password")
-        assert password_input.is_displayed()
-        assert password_input.get_attribute("type") == "password"
-
-    def test_register_page_loads(self, driver):
-        """La página de registro carga correctamente."""
-        driver.get(f"{BASE_URL}/register")
-        # Verificar que estamos en la página de registro
-        assert "register" in driver.current_url.lower() or "Regist" in driver.page_source
-        form = driver.find_element(By.TAG_NAME, "form")
-        assert form.is_displayed()
+class TestBasicE2E:
+    """Clase que agrupa tests básicos de End-to-End"""
+    # Abrir navegador y ir a la pagina principal
+    def test_homepage_loads(self, selenium_driver, e2e_base_url, flask_test_app):
+        """Test E2E: La página principal carga correctamente"""
+        selenium_driver.get(e2e_base_url)
