@@ -15,12 +15,6 @@ services:
     networks:
       - redcode_network
     restart: unless-stopped
-    # Se agrega healthcheck para evitar errores de conexión al arrancar las pruebas
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres -d redcode_academy" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   app:
     build:
@@ -34,8 +28,7 @@ services:
       - PORT=5000
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/redcode_academy
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     networks:
       - redcode_network
     volumes:

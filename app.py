@@ -17,8 +17,8 @@ if __name__ == '__main__':
 
     # Iniciar el servidor Flask 
     app.run( 
-        host=Config.HOST,      # Permite conexiones externas 
-        port=port,      # Puerto configurado 
+        host=Config.HOST,      # 0.0.0.0 permite conexiones externas 
+        port=port,      # Puerto configurado (5000 por defecto) 
         debug=Config.DEBUG     # Modo debug para desarrollo 
     )
     
