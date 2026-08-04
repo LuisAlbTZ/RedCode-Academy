@@ -19,13 +19,13 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # Cambiar de localhost al nombre del servicio definido en Docker
-BASE_URL = "http://localhost:5000" 
+BASE_URL = "http://app:5000" 
 
 # ==============================================================================
 # Pruebas de Páginas Públicas — Carga y Contenido
 # ==============================================================================
 
-class TestPublicPagesLoad:
+class TestBasicE2ENavigation:
     """Verifica que las páginas públicas cargan correctamente y muestran el contenido esperado."""
 
     def test_index_page_loads(self, driver):
