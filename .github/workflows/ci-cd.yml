@@ -1,0 +1,43 @@
+name: RedCode Academy CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Start Docker services
+      run: |
+        # Levantar los contenedores (app y db) en segundo plano
+        docker compose up -d --build
+        
+    - name: Wait for PostgreSQL to be ready
+      run: |
+        # Pausa activa para asegurar que la base de datos acepte conexiones antes de probar
+        echo "Esperando a que la base de datos de RedCode Academy inicie..."
+        sleep 10
+        docker compose exec -T db pg_isready -U postgres -d redcode_academy -t 15
+
+    - name: Run Pytest
+      run: |
+        # Ejecutar los tests de pytest dentro del contenedor de la aplicación
+        # El flag -T es vital en entornos CI para deshabilitar la asignación de pseudo-TTY
+        docker compose exec -T app python -m pytest
+
+    - name: Stop and remove containers
+      if: always()
+      run: |
+        # Limpieza de volúmenes y contenedores
+        docker compose down -v

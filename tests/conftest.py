@@ -1,5 +1,3 @@
-import os
-import sys
 import pytest
 from src import create_app
 from config import Config
